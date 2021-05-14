@@ -31,6 +31,7 @@
  */
 
 #include <vector>
+#include <limits.h>
 
 using namespace std;
 
@@ -40,8 +41,19 @@ public:
     int maxProfit(vector<int>& prices) {
         if (prices.empty()) return 0;
         int days = prices.size();
-
+        vector<int> hold(days);
+        vector<int> sold(days);
+        hold[0] = -prices[0];
+        sold[0] = 0;
+        for (int i = 1; i < days; i++) {
+            if (i == 1) {
+                hold[1] = max(-prices[0], -prices[1]);
+            } else {
+                hold[i] = max(hold[i - 1], sold[i - 2] - prices[i]);
+            }
+            sold[i] = max(sold[i - 1], hold[i - 1] + prices[i]);
+        }
+        return sold[days - 1];
     }
 };
 // @lc code=end
-
