@@ -45,6 +45,7 @@
  */
 
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
@@ -52,7 +53,27 @@ using namespace std;
 class Solution {
 public:
     int arrayNesting(vector<int>& nums) {
-
+        if (nums.empty()) return 0;
+        int result = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] != -1) {
+                int size = count(nums, i);
+                if (size > nums.size() / 2) return size;
+                result = max(size, result);
+            }
+        }
+        return result;
+    }
+private:
+    int count(vector<int>& nums, int n) {
+        int result = 0;
+        while(nums[n] != -1) {
+            int next = nums[n];
+            nums[n] = -1;
+            result += 1;
+            n = next;
+        }
+        return result;
     }
 };
 // @lc code=end
