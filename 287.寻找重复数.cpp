@@ -79,14 +79,29 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
+    // 找被两次指向的index, 但是修改了原数据
+    // int findDuplicate(vector<int>& nums) {
+    //     for (auto& num : nums) {
+    //         if (nums[abs(num)] < 0) {
+    //             return abs(num);
+    //         }
+    //         nums[abs(num)] *= -1;
+    //     }
+    //     return -1;
+    // }
     int findDuplicate(vector<int>& nums) {
-        for (auto& num : nums) {
-            if (nums[abs(num)] < 0) {
-                return abs(num);
-            }
-            nums[abs(num)] *= -1;
+        int slow = nums[0];
+        int fast = nums[nums[0]];
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
         }
-        return -1;
+        fast = 0;
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
     }
 };
 // @lc code=end
