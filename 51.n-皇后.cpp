@@ -59,8 +59,46 @@ using namespace std;
 class Solution {
 public:
     vector<vector<string>> solveNQueens(int n) {
-
+        vector<string> board(n, string(n, '.'));
+        backtrace(board, 0);
+        return result;
     }
+private:
+    void backtrace(vector<string>& board, int row) {
+        if (row == board.size()) {
+            result.push_back(board);
+            return;
+        }
+        int n = board.size();
+        for (int col = 0; col < n; col++) {
+            if (!check(board, make_pair(row, col))) continue;
+            board[row][col] = 'Q';
+            backtrace(board, row + 1);
+            board[row][col] = '.';
+        }
+    }
+
+    bool check(vector<string>& board, pair<int, int>&& position) {
+        int n = board.size();
+        int row = position.first;
+        int col = position.second;
+        for (int i = 0; i < row; i++) {
+            if (board[i][position.second] == 'Q') {
+                return false;
+            }
+        }
+        // 右上
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') return false;
+        }
+        // 左上
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') return false;
+        }
+        return true;
+    }
+private:
+   vector<vector<string>> result;
 };
 // @lc code=end
 
