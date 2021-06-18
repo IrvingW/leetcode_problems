@@ -19,39 +19,37 @@
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        ListNode* rightTail = findMid(head);
-        ListNode* right = reverse(rightTail);
+        ListNode* right = findMidNode(head);
+        right = reverseList(right);
         ListNode* left = head;
         while(right != nullptr) {
             if (left->val != right->val) return false;
-            right = right->next;
             left = left->next;
+            right = right->next;
         }
         return true;
     }
 private:
-    // 反转链表
-    ListNode* reverse(ListNode* head) {
-        ListNode* newHead = new ListNode();
-        while(head != nullptr) {
-            ListNode* next = head->next;
-            head->next = newHead->next;
-            newHead->next = head;
-            head = next;
+    ListNode* reverseList(ListNode* head) {
+        ListNode dummy = ListNode();
+        ListNode* cur = head;
+        while(cur != nullptr) {
+            ListNode* next = cur->next;
+            cur->next = dummy.next;
+            dummy.next = cur;
+            cur = next;
         }
-        return newHead->next;
+        return dummy.next;
     }
 
-private:
-    ListNode* findMid(ListNode* head) {
+    ListNode* findMidNode(ListNode* head) {
         ListNode* slow = head;
         ListNode* fast = head;
         while(fast != nullptr && fast->next != nullptr) {
             slow = slow->next;
             fast = fast->next->next;
         }
-        if (fast != nullptr) slow = slow->next;
-        return slow;
+        return (fast == nullptr) ? slow : slow->next;
     }
 };
 // @lc code=end
